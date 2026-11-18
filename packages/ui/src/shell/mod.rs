@@ -1,6 +1,9 @@
 //! The main window: nav rail · agent list · builder · live test chat.
+mod list;
+
 use crate::*;
 use dioxus::prelude::*;
+use list::AgentList;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Section {
@@ -81,7 +84,9 @@ pub fn AppShell() -> Element {
     document::Title { "TooluBot — {name}" }
     div { class: "tb-shell",
       Rail { section }
-      if section() != Section::Agents {
+      if section() == Section::Agents {
+        AgentList { agents, selected }
+      } else {
         main { class: "tb-section-empty",
           div { class: "tb-empty",
             h1 { class: "display", "{section().label()}" }
