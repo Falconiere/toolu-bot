@@ -66,3 +66,120 @@
     --shadow-pop: 0 8px 24px rgba(40, 30, 20, 0.12);
   }
 }
+
+/* Type scale */
+.display-xl {
+  font: 600 56px / 60px var(--font-display);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.display {
+  font: 600 32px / 38px var(--font-display);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.title {
+  font: 600 20px / 28px var(--font-display);
+  margin: 0;
+}
+.heading {
+  font: 600 15px / 22px var(--font-sans);
+  margin: 0;
+}
+.small {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.mono {
+  font: 13px / 20px var(--font-mono);
+}
+
+/* Browser surfaces */
+html,
+body {
+  height: 100%;
+}
+::selection {
+  background: var(--ember-soft);
+  color: var(--ink);
+}
+* {
+  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-width: thin;
+}
+input,
+textarea {
+  caret-color: var(--ember-ink);
+}
+input[type="range"] {
+  accent-color: var(--ember);
+  width: 100%;
+  margin: 0;
+}
+button {
+  font: inherit;
+}
+:where(button, input, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Primitives the bundle leaves to the app */
+.fm-tool > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.fm-tool > summary::-webkit-details-marker {
+  display: none;
+}
+.fm-tool--bare > summary {
+  cursor: default;
+  pointer-events: none;
+}
+.fm-tool__head svg,
+.fm-btn svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.fm-toggle-row {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  cursor: pointer;
+}
+.fm-avatar--live {
+  animation: tb-pulse 2.4s ease-out infinite;
+}
+@keyframes tb-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 106, 43, 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgba(255, 106, 43, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fm-avatar--live {
+    animation: none;
+  }
+}
+svg.tb-icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
