@@ -21,10 +21,10 @@ jobs:
       - run: dx fmt --check
       - name: Max 400 code lines per .rs file (comments and blanks excluded)
         run: |
-          tokei . --types Rust --files --output json | jq -r '.Rust.reports[] | select(.stats.code > 400) | "\(.name): \(.stats.code) code lines (max 400)"' | grep . && exit 1 || true
+          tokei . --types Rust --files --output json | jq -n -r 'input | [.Rust.reports[] | select(.stats.code > 400) | "\(.name): \(.stats.code) code lines (max 400)"] | if length > 0 then (join("\n") + "\n" | halt_error(1)) else empty end'
       - name: Max 50 code lines per function body, incl. components (comments and blanks excluded)
         run: |
-          ast-grep scan --rule lint/fn-body.yml --json=stream packages | jq -r '(.text | split("\n") | map(select(test("^\\s*(//|/\\*|\\*|$)") | not)) | length - 2) as $n | select($n > 50) | "\(.file):\(.range.start.line + 1): function body has \($n) code lines (max 50)"' | grep . && exit 1 || true
+          ast-grep scan --rule lint/fn-body.yml --json=compact packages | jq -n -r 'input | [.[] | (.text | split("\n") | map(select(test("^\\s*(//|/\\*|\\*|$)") | not)) | length - 2) as $n | select($n > 50) | "\(.file):\(.range.start.line + 1): function body has \($n) code lines (max 50)"] | if length > 0 then (join("\n") + "\n" | halt_error(1)) else empty end'
       - name: No #[expect], #[ignore] or #[rustfmt::skip]
         run: |
           ! git grep -nE '^[[:space:]]*#!?\[[[:space:]]*(cfg_attr\(.*)?(expect|ignore|rustfmt::skip)([^[:alnum:]_]|$)' -- '*.rs'
