@@ -133,7 +133,8 @@ button {
   white-space: nowrap;
 }
 
-/* Primitives the bundle leaves to the app */
+/* Primitives the bundle leaves to the app.
+   bundle.css loads after this file, so an override of a bundle rule needs higher specificity. */
 .fm-tool > summary {
   list-style: none;
   cursor: pointer;
@@ -151,7 +152,7 @@ button {
   height: 16px;
   flex: none;
 }
-.fm-toggle-row {
+.fm-row.fm-toggle-row {
   justify-content: space-between;
   flex-wrap: nowrap;
   cursor: pointer;
