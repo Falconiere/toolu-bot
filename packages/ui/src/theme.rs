@@ -4,6 +4,7 @@ use dioxus::prelude::*;
 pub const MARK: Asset = asset!("/assets/toolubot-mark.svg");
 
 const TOKENS_CSS: Asset = asset!("/assets/toolubot.css");
+const BUNDLE_CSS: Asset = asset!("/assets/bundle.css");
 // Variable fonts, Latin subset, shipped with the app so it works offline (SIL OFL 1.1).
 // shortcut: Latin only; add the latin-ext / cyrillic subsets when the UI is localised.
 const INTER: Asset = asset!("/assets/fonts/inter.woff2");
@@ -21,5 +22,6 @@ pub fn Theme() -> Element {
   rsx! {
     document::Style { "{faces}" }
     document::Stylesheet { href: TOKENS_CSS }
+    document::Stylesheet { href: BUNDLE_CSS }
   }
 }
