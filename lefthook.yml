@@ -1,4 +1,5 @@
 # Install once per clone: `lefthook install`. Fixers re-stage what they change; clippy gates last.
+# Size checks end in jq so a missing or failing tool fails the step instead of passing silently.
 pre-commit:
   piped: true
   commands:
@@ -14,11 +15,11 @@ pre-commit:
     3_file-length:
       glob: "*.rs"
       run: |
-        tokei . --types Rust --files --output json | jq -r '.Rust.reports[] | select(.stats.code > 400) | "\(.name): \(.stats.code) code lines (max 400)"' | grep . && exit 1 || true
+        tokei . --types Rust --files --output json | jq -n -r 'input | [.Rust.reports[] | select(.stats.code > 400) | "\(.name): \(.stats.code) code lines (max 400)"] | if length > 0 then (join("\n") + "\n" | halt_error(1)) else empty end'
     4_fn-length:
       glob: "*.rs"
       run: |
-        ast-grep scan --rule lint/fn-body.yml --json=stream packages | jq -r '(.text | split("\n") | map(select(test("^\\s*(//|/\\*|\\*|$)") | not)) | length - 2) as $n | select($n > 50) | "\(.file):\(.range.start.line + 1): function body has \($n) code lines (max 50)"' | grep . && exit 1 || true
+        ast-grep scan --rule lint/fn-body.yml --json=compact packages | jq -n -r 'input | [.[] | (.text | split("\n") | map(select(test("^\\s*(//|/\\*|\\*|$)") | not)) | length - 2) as $n | select($n > 50) | "\(.file):\(.range.start.line + 1): function body has \($n) code lines (max 50)"] | if length > 0 then (join("\n") + "\n" | halt_error(1)) else empty end'
     5_no-suppressions:
       glob: "*.rs"
       run: |
