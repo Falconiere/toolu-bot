@@ -1,0 +1,68 @@
+/* TooluBot tokens (from the design system's tokens.json) + app shell layout.
+   Night is the primary theme; day follows the OS light preference. */
+:root {
+  color-scheme: dark;
+  --bg-000: #121110;
+  --bg-100: #1a1917;
+  --bg-200: #24221f;
+  --bg-300: #2e2b27;
+  --line: #34312c;
+  --line-strong: #5a554d;
+  --ink: #f2eee8;
+  --ink-muted: #a39d93;
+  --ink-inverse: #1a1815;
+  --ember: #ff6a2b;
+  --ember-ink: #ff8a57;
+  --ember-soft: #3a2117;
+  --moss: #4fc28f;
+  --moss-soft: #15301f;
+  --sky: #6fb3ff;
+  --sky-soft: #16263a;
+  --amber: #f2c14e;
+  --amber-soft: #332a12;
+  --danger: #ff7070;
+  --danger-soft: #3a1818;
+  --focus: var(--ember-ink);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg-000: #f7f4ef;
+    --bg-100: #ffffff;
+    --bg-200: #efebe4;
+    --bg-300: #e6e0d6;
+    --line: #ddd7cd;
+    --line-strong: #9c9488;
+    --ink: #1a1815;
+    --ink-muted: #5e584f;
+    --ink-inverse: #1a1815;
+    --ember-ink: #b83d0b;
+    --ember-soft: #ffe6da;
+    --moss: #1b704b;
+    --moss-soft: #dcf2e6;
+    --sky: #1d5fae;
+    --sky-soft: #dde9f8;
+    --amber: #7d5900;
+    --amber-soft: #fbefcf;
+    --danger: #b72424;
+    --danger-soft: #fbe0e0;
+    --shadow-pop: 0 8px 24px rgba(40, 30, 20, 0.12);
+  }
+}

@@ -1,5 +1,27 @@
 # Development
 
+## Linting and formatting
+
+- **Rust:** `cargo fmt` + `dx fmt` (rsx), 2-space indent. `cargo clippy` with the workspace lints in `Cargo.toml`: every warning is an error, including dead code, `unwrap`/`expect` and `panic!`.
+- **No suppressions:** clippy rejects `#[allow]`, and `unwrap`/`expect` are `forbid` (no attribute can silence them). A `git grep` check rejects `#[expect]`, `#[ignore]` and `#[rustfmt::skip]`. Fix the cause instead.
+- **File size:** at most 400 code lines per `.rs` file, counted by `tokei` (comments and blank lines don't count). Split into modules past that.
+- **Function size:** at most 50 code lines per function body (comments and blank lines don't count). Clippy's `too_many_lines` checks plain functions; `ast-grep` with `lint/fn-body.yml` also covers `#[component]` functions, which the macro hides from clippy.
+- **CSS, JSON, TOML:** `oxfmt` (config in `.oxfmtrc.json`; skips Markdown and the verbatim design-system `bundle.css`).
+
+Run once per clone to format and lint on every commit (needs `lefthook`, `dx`, `tokei`, `ast-grep`, `jq` and Node):
+
+```sh
+lefthook install
+```
+
+CI runs the same checks (`.github/workflows/lint.yml`). Run them all by hand:
+
+```sh
+lefthook run pre-commit --all-files
+```
+
+## Workspace
+
 Your new workspace contains a member crate for each of the web, desktop and mobile platforms, a `ui` crate for shared components and a `api` crate for shared backend logic:
 
 ```
