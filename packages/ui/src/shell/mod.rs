@@ -1,7 +1,9 @@
 //! The main window: nav rail · agent list · builder · live test chat.
+mod builder;
 mod list;
 
 use crate::*;
+use builder::Builder;
 use dioxus::prelude::*;
 use list::AgentList;
 
@@ -68,6 +70,13 @@ impl Section {
   }
 }
 
+/// Apply an edit to agent `i`, if it exists.
+fn update(mut agents: Signal<Vec<Agent>>, i: usize, f: impl FnOnce(&mut Agent)) {
+  if let Some(a) = agents.write().get_mut(i) {
+    f(a)
+  }
+}
+
 /// The TooluBot main window.
 #[component]
 pub fn AppShell() -> Element {
@@ -86,6 +95,7 @@ pub fn AppShell() -> Element {
       Rail { section }
       if section() == Section::Agents {
         AgentList { agents, selected }
+        Builder { agents, selected: selected() }
       } else {
         main { class: "tb-section-empty",
           div { class: "tb-empty",
