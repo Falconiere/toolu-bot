@@ -9,5 +9,6 @@ fn App() -> Element {
   rsx! {
     document::Link { rel: "icon", href: ui::MARK }
     ui::Theme {}
+    ui::AppShell {}
   }
 }

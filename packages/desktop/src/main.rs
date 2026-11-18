@@ -8,5 +8,6 @@ fn main() {
 fn App() -> Element {
   rsx! {
     ui::Theme {}
+    ui::AppShell {}
   }
 }

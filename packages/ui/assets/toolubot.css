@@ -184,3 +184,61 @@ svg.tb-icon {
   stroke-linejoin: round;
   flex: none;
 }
+
+/* Shell: rail · agent list · builder · test chat */
+.tb-shell {
+  display: grid;
+  grid-template-columns: 184px 240px minmax(0, 1fr) 340px;
+  height: 100vh;
+  overflow: hidden;
+}
+.tb-shell > * {
+  min-height: 0;
+  overflow: auto;
+}
+.tb-shell .fm-rail {
+  border-radius: 0;
+}
+.tb-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) var(--space-3);
+  font: 600 15px / 22px var(--font-display);
+}
+.tb-brand img {
+  width: 22px;
+  height: 22px;
+}
+.fm-nav-item {
+  border: 0;
+  background: none;
+  text-align: left;
+  width: 100%;
+}
+.tb-rail-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.tb-rail-foot .fm-badge {
+  margin: 0 var(--space-2);
+  align-self: flex-start;
+}
+
+.tb-empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 56ch;
+  padding: var(--space-12) 0;
+}
+.tb-empty p {
+  margin: 0;
+  color: var(--ink-muted);
+}
+.tb-section-empty {
+  grid-column: 2 / -1;
+  padding: var(--space-12) var(--space-8);
+}

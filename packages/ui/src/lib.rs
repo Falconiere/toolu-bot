@@ -4,9 +4,11 @@
 mod agents;
 mod icon;
 mod primitives;
+mod shell;
 mod theme;
 
 pub use agents::{Agent, Turn};
 pub use icon::{Icon, IconName};
 pub use primitives::*;
+pub use shell::AppShell;
 pub use theme::{Theme, MARK};
