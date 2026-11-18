@@ -1,16 +1,8 @@
 # UI
 
-This crate contains all shared components for the workspace. This is a great place to place any UI you would like to use in multiple platforms like a common `Button` or `Navbar` component.
+Every TooluBot component, style, font and screen, shared by the web, desktop and mobile apps. Built from the TooluBot design system (https://claude.ai/artifact/7eLRjAFNEkRzFeYSF9SdFv).
 
-```
-ui/
-├─ src/
-│  ├─ lib.rs # The entrypoint for the ui crate
-│  ├─ hero.rs # The Hero component that will be used in every platform
-│  ├─ echo.rs # The shared echo component that communicates with the server
-│  ├─ navbar.rs # The Navbar component that will be used in the layout of every platform's router
-```
+- `assets/`: design tokens (`toolubot.css`), the design system's component styles, local fonts and the mark.
+- `src/theme.rs`: `Theme` loads the tokens, styles and fonts. Render it once at the app root.
 
-## Dependencies
-
-Since this crate is shared between multiple platforms, it should not pull in any platform specific dependencies. For example, if you want to use the `web_sys` crate in the web build of your app, you should not add it to this crate. Instead, you should add platform specific dependencies to the [web](../web/Cargo.toml), [desktop](../desktop/Cargo.toml), or [mobile](../mobile/Cargo.toml) crates.
+New UI goes here so every platform gets it.
