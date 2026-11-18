@@ -229,7 +229,13 @@ pub fn ToolCall(
 /// One agent in the library grid: avatar, name, status, purpose, model + tool chips.
 #[component]
 pub fn AgentCard(agent: crate::Agent, #[props(default)] selected: bool) -> Element {
-  let extra = agent.tools.len().saturating_sub(2);
+  // At most three chips: the model plus tools, collapsing the rest into +N.
+  let shown = if agent.tools.len() <= 2 {
+    agent.tools.len()
+  } else {
+    1
+  };
+  let extra = agent.tools.len() - shown;
   rsx! {
     div { class: if selected { "fm-agent fm-agent--selected" } else { "fm-agent" },
       div { class: "fm-agent__head",
@@ -246,8 +252,7 @@ pub fn AgentCard(agent: crate::Agent, #[props(default)] selected: bool) -> Eleme
       p { class: "fm-agent__desc", "{agent.purpose}" }
       div { class: "fm-agent__meta",
         span { class: "fm-chip", "{agent.model}" }
-        // At most three chips: model, two tools, then +N.
-        for tool in agent.tools.iter().take(2) {
+        for tool in agent.tools.iter().take(shown) {
           span { class: "fm-chip", "{tool}" }
         }
         if extra > 0 {
