@@ -1,10 +1,6 @@
-//! This crate contains all shared UI for the workspace.
+//! TooluBot shared UI: design tokens, primitives and the agent-builder shell.
+//! Source of truth: the TooluBot design system (https://claude.ai/artifact/7eLRjAFNEkRzFeYSF9SdFv).
 
-mod hero;
-pub use hero::Hero;
+mod theme;
 
-mod navbar;
-pub use navbar::Navbar;
-
-mod echo;
-pub use echo::Echo;
+pub use theme::{Theme, MARK};

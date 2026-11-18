@@ -1,0 +1,28 @@
+# Install once per clone: `lefthook install`. Fixers re-stage what they change; clippy gates last.
+pre-commit:
+  piped: true
+  commands:
+    1_rust-fmt:
+      glob: "*.rs"
+      # Not `dx fmt --all-code`: in dx 0.7.10 it strips blank lines and breaks code.
+      run: cargo fmt --all && dx fmt
+      stage_fixed: true
+    2_oxfmt:
+      glob: "*.{css,json,toml}"
+      run: npx --yes oxfmt@0.76.0 --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+    3_file-length:
+      glob: "*.rs"
+      run: |
+        tokei . --types Rust --files --output json | jq -r '.Rust.reports[] | select(.stats.code > 400) | "\(.name): \(.stats.code) code lines (max 400)"' | grep . && exit 1 || true
+    4_fn-length:
+      glob: "*.rs"
+      run: |
+        ast-grep scan --rule lint/fn-body.yml --json=stream packages | jq -r '(.text | split("\n") | map(select(test("^\\s*(//|/\\*|\\*|$)") | not)) | length - 2) as $n | select($n > 50) | "\(.file):\(.range.start.line + 1): function body has \($n) code lines (max 50)"' | grep . && exit 1 || true
+    5_no-suppressions:
+      glob: "*.rs"
+      run: |
+        ! git grep -nE '^[[:space:]]*#!?\[[[:space:]]*(cfg_attr\(.*)?(expect|ignore|rustfmt::skip)([^[:alnum:]_]|$)' -- '*.rs'
+    6_clippy:
+      glob: "*.{rs,toml}"
+      run: cargo clippy --workspace --all-targets

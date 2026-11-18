@@ -1,0 +1,9 @@
+# Every Rust function body, including #[component] ones clippy's too_many_lines can't see
+# (the macro hides them). The hook/CI count each body's non-blank, non-comment lines with jq.
+id: fn-body
+language: rust
+rule:
+  kind: block
+  inside:
+    kind: function_item
+    field: body

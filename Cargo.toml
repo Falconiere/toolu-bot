@@ -1,16 +1,31 @@
 [workspace]
 resolver = "2"
-members = [
-    "packages/ui",
-    "packages/web",
-    "packages/desktop",
-    "packages/mobile",
-    "packages/api",
-]
+members = ["packages/ui", "packages/web", "packages/desktop", "packages/mobile", "packages/api"]
 
 [workspace.dependencies]
 dioxus = { version = "0.7.1" }
 
 # workspace
 ui = { path = "packages/ui" }
-api = { path = "packages/api" }
+
+# Every warning is an error. `forbid` also rejects any #[allow]/#[expect] of that lint; it can't
+# go on groups, dead_code or panic because Dioxus macros emit #[allow(..)] for those.
+[workspace.lints.rust]
+warnings = { level = "deny", priority = -1 }
+unused = { level = "deny", priority = -1 }
+dead_code = "deny"
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+unwrap_used = "forbid"
+unwrap_in_result = "forbid"
+expect_used = "forbid"
+panic = "deny"
+todo = "deny"
+dbg_macro = "deny"
+too_many_lines = "deny"
+# No suppressions: #[allow] is banned; #[expect] and #[ignore] must at least give a reason.
+allow_attributes = "deny"
+allow_attributes_without_reason = "deny"
+ignore_without_reason = "deny"

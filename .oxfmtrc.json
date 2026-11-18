@@ -1,0 +1,4 @@
+{
+  "printWidth": 100,
+  "ignorePatterns": ["**/*.md", "packages/ui/assets/bundle.css"]
+}
