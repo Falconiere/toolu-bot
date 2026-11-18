@@ -90,18 +90,7 @@ pub(super) fn Builder(agents: Signal<Vec<Agent>>, selected: usize) -> Element {
 fn PersonaTab(agents: Signal<Vec<Agent>>, i: usize, agent: Agent) -> Element {
   rsx! {
     div { class: "fm-stack", style: "gap: var(--space-6)",
-      Field { id: "persona", label: "Personality",
-        textarea {
-          id: "persona",
-          class: "fm-input fm-input--mono",
-          rows: "6",
-          placeholder: "You are…",
-          value: "{agent.persona}",
-          oninput: move |e| update(agents, i, |a| a.persona = e.value()),
-          // SSR writes `value` as an attribute, which a textarea ignores; the text node seeds it.
-          "{agent.persona}"
-        }
-      }
+      PersonaField { agents, i, persona: agent.persona.clone() }
       div { class: "tb-grid-2",
         Slider {
           id: "humour",
@@ -127,6 +116,36 @@ fn PersonaTab(agents: Signal<Vec<Agent>>, i: usize, agent: Agent) -> Element {
             checked,
             onchange: move |v| update(agents, i, |a| set(a, v)),
           }
+        }
+      }
+    }
+  }
+}
+
+/// The personality prompt. A textarea can't be hydrated: SSR's `value` attribute is
+/// ignored and hydration markers inside it become literal text. So the real one renders
+/// after mount, when Dioxus sets `value` as a property; until then a disabled stand-in.
+#[component]
+fn PersonaField(agents: Signal<Vec<Agent>>, i: usize, persona: String) -> Element {
+  let mut mounted = use_signal(|| false);
+  use_effect(move || mounted.set(true));
+  rsx! {
+    Field { id: "persona", label: "Personality",
+      if mounted() {
+        textarea {
+          id: "persona",
+          class: "fm-input fm-input--mono",
+          rows: "6",
+          placeholder: "You are…",
+          value: "{persona}",
+          oninput: move |e| update(agents, i, |a| a.persona = e.value()),
+        }
+      } else {
+        textarea {
+          id: "persona",
+          class: "fm-input fm-input--mono",
+          rows: "6",
+          disabled: true,
         }
       }
     }
