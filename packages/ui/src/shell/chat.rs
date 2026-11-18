@@ -43,15 +43,20 @@ pub(super) fn TestChat(agents: Signal<Vec<Agent>>, selected: usize) -> Element {
 }
 
 #[component]
-fn Composer(agents: Signal<Vec<Agent>>, selected: usize, name: String) -> Element {
+fn Composer(agents: Signal<Vec<Agent>>, selected: ReadSignal<usize>, name: String) -> Element {
   let mut draft = use_signal(String::new);
+  // A half-typed draft never follows you to another agent.
+  use_effect(move || {
+    selected();
+    draft.set(String::new());
+  });
   // shortcut: no model runtime yet, so every message gets the honest "not connected" error.
   let mut send = move || {
     let text = draft().trim().to_string();
     if text.is_empty() {
       return;
     }
-    update(agents, selected, |a| {
+    update(agents, selected(), |a| {
       a.chat.push(Turn::User(text));
       a.chat.push(Turn::Tool {
         name: "model.generate".into(),
