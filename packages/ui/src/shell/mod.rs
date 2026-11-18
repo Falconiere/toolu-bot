@@ -1,9 +1,11 @@
 //! The main window: nav rail · agent list · builder · live test chat.
 mod builder;
+mod chat;
 mod list;
 
 use crate::*;
 use builder::Builder;
+use chat::TestChat;
 use dioxus::prelude::*;
 use list::AgentList;
 
@@ -96,6 +98,7 @@ pub fn AppShell() -> Element {
       if section() == Section::Agents {
         AgentList { agents, selected }
         Builder { agents, selected: selected() }
+        TestChat { agents, selected: selected() }
       } else {
         main { class: "tb-section-empty",
           div { class: "tb-empty",
