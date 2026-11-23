@@ -49,7 +49,7 @@ impl Tab {
 /// Agent header with Deploy, then the settings tabs.
 #[component]
 pub(super) fn Builder(agents: Signal<Vec<Agent>>, selected: usize) -> Element {
-  let mut tab = use_signal(|| Tab::Persona);
+  let mut open = use_signal(|| vec![Tab::Persona]);
   let Some(a) = agents.read().get(selected).cloned() else {
     return rsx! {};
   };
@@ -66,21 +66,65 @@ pub(super) fn Builder(agents: Signal<Vec<Agent>>, selected: usize) -> Element {
         }
         Button {
           variant: ButtonVariant::Primary,
-          onclick: move |_| tab.set(Tab::Channels),
+          onclick: move |_| {
+              open.with_mut(|v| {
+                  if !v.contains(&Tab::Channels) {
+                      v.push(Tab::Channels);
+                  }
+              });
+          },
           "Deploy"
         }
       }
-      TabBar { tab }
-      div { role: "tabpanel", "aria-label": tab().label(),
-        if tab() == Tab::Persona {
-          PersonaTab { agents, i: selected, agent: a }
-        } else {
-          div { class: "tb-empty",
-            h2 { class: "title", "{tab().label()}" }
-            p { "{tab().blurb()}" }
-            p { class: "small", "Not wired up yet." }
+      for t in Tab::ALL {
+        Section { tab: t, open,
+          if t == Tab::Persona {
+            PersonaTab { agents, i: selected, agent: a.clone() }
+          } else {
+            div { class: "tb-empty",
+              p { "{t.blurb()}" }
+              p { class: "small", "Not wired up yet." }
+            }
           }
         }
+      }
+    }
+  }
+}
+
+/// Expand `tab` if collapsed, collapse it if expanded.
+fn toggle_section(open: &mut Vec<Tab>, tab: Tab) {
+  if let Some(i) = open.iter().position(|t| *t == tab) {
+    open.remove(i);
+  } else {
+    open.push(tab);
+  }
+}
+
+/// One collapsible settings section. Several may stay open at once.
+#[component]
+fn Section(tab: Tab, mut open: Signal<Vec<Tab>>, children: Element) -> Element {
+  let expanded = open.read().contains(&tab);
+  rsx! {
+    div { class: "tb-section",
+      button {
+        r#type: "button",
+        class: "tb-section-head heading",
+        "aria-expanded": expanded,
+        onclick: move |_| {
+            open.with_mut(|v| toggle_section(v, tab));
+        },
+        "{tab.label()}"
+        span { class: "tb-section-mark", "aria-hidden": "true",
+          if expanded {
+            "−"
+          } else {
+            "+"
+          }
+        }
+      }
+      if expanded {
+        div { class: "tb-section-body", {children} }
       }
     }
   }
@@ -170,27 +214,6 @@ fn toggles(a: &Agent) -> [(&'static str, bool, Setter); 3] {
 }
 
 #[component]
-fn TabBar(mut tab: Signal<Tab>) -> Element {
-  rsx! {
-    div {
-      class: "fm-tabs tb-tabs",
-      role: "tablist",
-      "aria-label": "Agent settings",
-      for t in Tab::ALL {
-        button {
-          r#type: "button",
-          role: "tab",
-          class: if tab() == t { "fm-tab fm-tab--active" } else { "fm-tab" },
-          "aria-selected": tab() == t,
-          onclick: move |_| tab.set(t),
-          "{t.label()}"
-        }
-      }
-    }
-  }
-}
-
-#[component]
 fn Slider(
   id: String,
   label: String,
@@ -217,3 +240,7 @@ fn Slider(
     }
   }
 }
+
+#[cfg(test)]
+#[path = "tests/builder.rs"]
+mod tests;
