@@ -1,4 +1,4 @@
-//! The main window: nav rail · agent list · builder · live test chat.
+//! The main window: nav rail · agent list · live test chat · builder.
 mod builder;
 mod chat;
 mod list;
@@ -97,8 +97,8 @@ pub fn AppShell() -> Element {
       Rail { section }
       if section() == Section::Agents {
         AgentList { agents, selected }
-        Builder { agents, selected: selected() }
         TestChat { agents, selected: selected() }
+        Builder { agents, selected: selected() }
       } else {
         main { class: "tb-section-empty",
           div { class: "tb-empty",

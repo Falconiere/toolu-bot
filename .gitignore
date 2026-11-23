@@ -10,3 +10,7 @@
 .claude/settings.local.json
 .claude/tmp/
 
+# Local toolu scratch
+.toolu/tmp/
+.toolu/.toolu/tmp/
+

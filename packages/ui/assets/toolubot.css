@@ -185,10 +185,10 @@ svg.tb-icon {
   flex: none;
 }
 
-/* Shell: rail · agent list · builder · test chat */
+/* Shell: rail · agent list · test chat · builder */
 .tb-shell {
   display: grid;
-  grid-template-columns: 184px 240px minmax(0, 1fr) 340px;
+  grid-template-columns: 184px 240px minmax(0, 1fr) 400px;
   height: 100vh;
   overflow: hidden;
 }
@@ -282,6 +282,7 @@ svg.tb-icon {
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-6) var(--space-8);
+  border-left: 1px solid var(--line);
 }
 .tb-builder-head {
   display: flex;
@@ -294,13 +295,26 @@ svg.tb-icon {
   height: 44px;
   font-size: 20px;
 }
-.fm-tab {
+.tb-section {
+  border-bottom: 1px solid var(--line);
+}
+.tb-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-3) 0;
   border: 0;
   background: none;
-  border-bottom: 2px solid transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
 }
-.tb-tabs {
-  overflow-x: auto;
+.tb-section-mark {
+  color: var(--ink-muted);
+}
+.tb-section-body {
+  padding-bottom: var(--space-5);
 }
 .tb-grid-2 {
   display: grid;
@@ -337,7 +351,6 @@ svg.tb-icon {
 .tb-chat {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--line);
   background: var(--bg-100);
   overflow: hidden;
 }
@@ -372,7 +385,7 @@ svg.tb-icon {
 /* Narrow desktop windows: icon-only rail */
 @media (max-width: 1180px) {
   .tb-shell {
-    grid-template-columns: 56px 220px minmax(0, 1fr) 320px;
+    grid-template-columns: 56px 220px minmax(0, 1fr) 360px;
   }
   .tb-brand span,
   .fm-rail .fm-nav-item span,
@@ -455,7 +468,7 @@ svg.tb-icon {
   }
   .tb-chat {
     border-left: 0;
-    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
     min-height: 520px;
     overflow: visible;
   }
