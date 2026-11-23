@@ -20,6 +20,8 @@ CI runs the same checks (`.github/workflows/lint.yml`). Run them all by hand:
 lefthook run pre-commit --all-files
 ```
 
+Git ignores local toolu scratch directories at `.toolu/tmp/` and `.toolu/.toolu/tmp/`.
+
 ## Workspace
 
 The workspace has a crate for each platform (web, desktop, mobile), a `ui` crate that holds **all** UI, and an `api` crate for server functions:

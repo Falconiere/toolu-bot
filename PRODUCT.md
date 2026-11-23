@@ -35,7 +35,7 @@ Local-first and transparent where hosted bot platforms are closed:
 
 - **Desktop-led, full parity.** Desktop is home base; web and mobile run the same full studio, adapted to screen size. No feature is desktop-only by design.
 - **Areas:**
-  - Agents: library and builder (Persona · Brain · Tools · Memory · Channels · Guardrails, with a live test chat beside it).
+  - Agents: library, test chat in the flexible center column, and settings in the right rail. The six vertical sections (Persona · Brain · Tools · Memory · Channels · Guardrails) collapse independently. Only Persona starts open. Deploy opens Channels and leaves other sections as they are.
   - Flows: a visual canvas.
   - Tools & MCP.
   - Knowledge: indexed locally.
@@ -52,7 +52,7 @@ Local-first and transparent where hosted bot platforms are closed:
   - `packages/web`, `packages/desktop` and `packages/mobile` are thin entry points that render `ui::Theme` and `ui::AppShell`.
   - `packages/api` holds fullstack server functions.
   - New UI goes in `packages/ui` so every platform gets it; platform crates add only platform wiring.
-- **Built so far:** AppShell (the agent builder) on static demo data. Other areas and tabs are placeholders.
+- **Built so far:** AppShell (the agent builder) on static demo data. Persona is editable. The other settings sections and app areas are placeholders.
   - There is no model runtime yet. The test chat reports "not connected" rather than faking replies.
   - Nothing is saved to disk yet.
 - **Approval rule:** anything that posts publicly, spends money or touches files outside the workspace requires approval by default.
