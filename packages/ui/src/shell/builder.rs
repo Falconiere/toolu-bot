@@ -1,4 +1,4 @@
-//! The agent builder: header, settings tabs, persona editor.
+//! The agent builder: header, collapsible settings sections, persona editor.
 use super::update;
 use crate::*;
 use dioxus::prelude::*;
@@ -46,7 +46,7 @@ impl Tab {
   }
 }
 
-/// Agent header with Deploy, then the settings tabs.
+/// Agent header with Deploy, then collapsible settings sections.
 #[component]
 pub(super) fn Builder(agents: Signal<Vec<Agent>>, selected: usize) -> Element {
   let mut open = use_signal(|| vec![Tab::Persona]);
