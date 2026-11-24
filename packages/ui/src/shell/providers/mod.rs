@@ -1,72 +1,42 @@
 //! Providers reference preview; account state is illustrative until integrations exist.
+mod catalog;
+mod detail;
+mod page;
+
+use catalog::{default_name, find, matching, Provider, CONNECTED, OTHER};
 use dioxus::prelude::*;
-
-#[derive(Clone, Copy, PartialEq)]
-struct Provider {
-  name: &'static str,
-  status: &'static str,
-  logo: Asset,
-}
-
-const CONNECTED: [Provider; 8] = [
-  Provider {
-    name: "ChatGPT",
-    status: "you@example.com",
-    logo: asset!("/assets/providers/chatgpt.svg"),
-  },
-  Provider {
-    name: "Claude",
-    status: "you@example.com",
-    logo: asset!("/assets/providers/claude.svg"),
-  },
-  Provider {
-    name: "Grok",
-    status: "you@example.com",
-    logo: asset!("/assets/providers/grok.svg"),
-  },
-  Provider {
-    name: "OpenCode",
-    status: "Runs on Agents - VPS",
-    logo: asset!("/assets/providers/opencode.svg"),
-  },
-  Provider {
-    name: "Gemini",
-    status: "you@example.com",
-    logo: asset!("/assets/providers/gemini.svg"),
-  },
-  Provider {
-    name: "Cursor",
-    status: "Runs on Agents - VPS",
-    logo: asset!("/assets/providers/cursor.svg"),
-  },
-  Provider {
-    name: "Muse",
-    status: "you@example.com",
-    logo: asset!("/assets/providers/terminal.svg"),
-  },
-  Provider {
-    name: "OpenRouter",
-    status: "Runs on Agents - VPS",
-    logo: asset!("/assets/providers/openrouter.svg"),
-  },
-];
-
-const OTHER: [Provider; 2] = [
-  Provider {
-    name: "Cline",
-    status: "Not downloaded",
-    logo: asset!("/assets/providers/cline.svg"),
-  },
-  Provider {
-    name: "Pi",
-    status: "Not connected",
-    logo: asset!("/assets/providers/terminal.svg"),
-  },
-];
+use page::ProviderPage;
 
 /// Searchable provider settings preview shared by every platform.
 #[component]
-pub(super) fn Providers(default_provider: Signal<usize>) -> Element {
+pub(super) fn Providers(mut default_provider: Signal<usize>) -> Element {
+  let mut open = use_signal(|| None::<&'static str>);
+  if let Some(page) = open().and_then(find) {
+    let index = default_provider();
+    let chosen = page.index;
+    return rsx! {
+      ProviderPage {
+        key: "{page.provider.name}",
+        provider: page.provider,
+        can_default: chosen.is_some(),
+        is_default: chosen == Some(index),
+        default_name: default_name(index).to_string(),
+        on_close: move |_| open.set(None),
+        on_make_default: move |_| {
+            if let Some(index) = chosen {
+                default_provider.set(index);
+            }
+        },
+      }
+    };
+  }
+  rsx! {
+    ProviderIndex { default_provider, on_open: move |name| open.set(Some(name)) }
+  }
+}
+
+#[component]
+fn ProviderIndex(default_provider: Signal<usize>, on_open: EventHandler<&'static str>) -> Element {
   let mut query = use_signal(String::new);
   let search = query().trim().to_lowercase();
   let connected = matching(&CONNECTED, &search);
@@ -95,14 +65,14 @@ pub(super) fn Providers(default_provider: Signal<usize>) -> Element {
               }
             }
           }
-          ProviderList { providers: connected }
+          ProviderList { providers: connected, on_open }
         }
         if !other.is_empty() {
           section {
             class: "tb-providers-other",
             "aria-labelledby": "other-providers-title",
             h2 { id: "other-providers-title", "Other providers" }
-            ProviderList { providers: other }
+            ProviderList { providers: other, on_open }
           }
         }
         if empty {
@@ -156,45 +126,34 @@ fn DefaultProvider(mut default_provider: Signal<usize>) -> Element {
 }
 
 #[component]
-fn ProviderList(providers: Vec<Provider>) -> Element {
+fn ProviderList(providers: Vec<Provider>, on_open: EventHandler<&'static str>) -> Element {
   rsx! {
     if !providers.is_empty() {
       div { class: "tb-provider-list",
         for provider in providers {
-          details { key: "{provider.name}", class: "tb-provider-row",
-            summary {
-              img {
-                class: "tb-provider-logo",
-                src: provider.logo,
-                alt: "",
-              }
-              span { class: "tb-provider-copy",
-                span { class: "tb-provider-name", "{provider.name}" }
-                span { class: "tb-provider-status", "{provider.status}" }
-              }
-              svg {
-                class: "tb-provider-chevron",
-                view_box: "0 0 16 16",
-                "aria-hidden": "true",
-                path { d: "m6 4 4 4-4 4" }
-              }
+          button {
+            key: "{provider.name}",
+            class: "tb-provider-row",
+            r#type: "button",
+            onclick: move |_| on_open.call(provider.name),
+            img {
+              class: "tb-provider-logo",
+              src: provider.logo,
+              alt: "",
             }
-            p { class: "tb-provider-detail",
-              "{provider.name} is shown as a preview. Provider sign-in and installation are not available yet."
+            span { class: "tb-provider-copy",
+              span { class: "tb-provider-name", "{provider.name}" }
+              span { class: "tb-provider-status", "{provider.status}" }
+            }
+            svg {
+              class: "tb-provider-chevron",
+              view_box: "0 0 16 16",
+              "aria-hidden": "true",
+              path { d: "m6 4 4 4-4 4" }
             }
           }
         }
       }
     }
   }
-}
-
-fn matching(providers: &[Provider], query: &str) -> Vec<Provider> {
-  providers
-    .iter()
-    .copied()
-    .filter(|provider| {
-      provider.name.to_lowercase().contains(query) || provider.status.to_lowercase().contains(query)
-    })
-    .collect()
 }
