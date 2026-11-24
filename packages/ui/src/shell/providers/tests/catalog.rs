@@ -96,6 +96,16 @@ fn account_edits_stop_at_the_limit() {
 }
 
 #[test]
+fn added_account_labels_stay_unique() {
+  let mut rows = vec![AccountRow {
+    label: "you+2@example.com".into(),
+    used_by: vec![],
+  }];
+  add_account(&mut rows, false);
+  assert_eq!(rows[1].label, "you+3@example.com");
+}
+
+#[test]
 fn model_search_matches_name_or_id() {
   let models = [
     model("Grok 4.7 Fast", "grok-4.7-build-fast"),

@@ -332,15 +332,22 @@ pub(super) fn next_label(count: usize, hosted: bool) -> String {
   }
 }
 
-/// Append an account until [`ACCOUNT_LIMIT`].
+/// Append an account until [`ACCOUNT_LIMIT`]. Labels stay unique after a removal.
 pub(super) fn add_account(rows: &mut Vec<AccountRow>, hosted: bool) {
   if rows.len() >= ACCOUNT_LIMIT {
     return;
   }
   rows.push(AccountRow {
-    label: next_label(rows.len(), hosted),
+    label: fresh_label(rows, hosted),
     used_by: Vec::new(),
   });
+}
+
+fn fresh_label(rows: &[AccountRow], hosted: bool) -> String {
+  (0..ACCOUNT_LIMIT)
+    .map(|offset| next_label(rows.len() + offset, hosted))
+    .find(|label| rows.iter().all(|row| row.label != *label))
+    .unwrap_or_else(|| next_label(rows.len() + ACCOUNT_LIMIT, hosted))
 }
 
 /// Drop one account. An out-of-range index does nothing.
