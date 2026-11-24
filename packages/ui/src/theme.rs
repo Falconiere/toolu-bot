@@ -6,6 +6,7 @@ pub const MARK: Asset = asset!("/assets/toolubot-mark.svg");
 const TOKENS_CSS: Asset = asset!("/assets/toolubot.css");
 // Loads after TOKENS_CSS: equal-specificity bundle rules win over toolubot.css.
 const BUNDLE_CSS: Asset = asset!("/assets/bundle.css");
+const PROVIDERS_CSS: Asset = asset!("/assets/providers.css");
 // Variable fonts, Latin subset, shipped with the app so it works offline (SIL OFL 1.1).
 // shortcut: Latin only; add the latin-ext / cyrillic subsets when the UI is localised.
 const INTER: Asset = asset!("/assets/fonts/inter.woff2");
@@ -24,5 +25,6 @@ pub fn Theme() -> Element {
     document::Style { "{faces}" }
     document::Stylesheet { href: TOKENS_CSS }
     document::Stylesheet { href: BUNDLE_CSS }
+    document::Stylesheet { href: PROVIDERS_CSS }
   }
 }
