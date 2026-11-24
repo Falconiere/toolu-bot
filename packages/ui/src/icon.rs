@@ -9,7 +9,7 @@ pub enum IconName {
   Knowledge,
   Channels,
   Runs,
-  Models,
+  Providers,
   Settings,
   Plus,
   Check,
@@ -31,7 +31,7 @@ impl IconName {
       IconName::Knowledge => r#"<path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h6"/>"#,
       IconName::Channels => r#"<path d="M4 6h16v10H8l-4 4z"/>"#,
       IconName::Runs => r#"<path d="M4 12h4l3-7 4 14 3-7h2"/>"#,
-      IconName::Models => {
+      IconName::Providers => {
         r#"<rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/>"#
       }
       IconName::Settings => {
