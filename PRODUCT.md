@@ -41,7 +41,7 @@ Local-first and transparent where hosted bot platforms are closed:
   - Knowledge: indexed locally.
   - Channels: X, Discord, Telegram, Slack, Matrix, a webhook or a local HTTP API.
   - Runs: an audit log with replay.
-  - Models: local models, plus remote keys stored in the OS keychain.
+  - Providers: local models, plus remote keys stored in the OS keychain.
 - **Journey:** Install → StarterPicker → Onboarding (pick a brain) → AppShell (say hi, shape the persona) → ToolsKnowledge → FlowEditor → FlowDebug → ChannelSetup → SafetyGoLive → Approvals → Runs (replay and tune, then back to the builder).
 - **Approvals** arrive as a desktop notification and inline in the chat.
 

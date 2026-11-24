@@ -2,12 +2,14 @@
 mod builder;
 mod chat;
 mod list;
+mod providers;
 
 use crate::*;
 use builder::Builder;
 use chat::TestChat;
 use dioxus::prelude::*;
 use list::AgentList;
+use providers::Providers;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Section {
@@ -17,7 +19,7 @@ enum Section {
   Knowledge,
   Channels,
   Runs,
-  Models,
+  Providers,
   Settings,
 }
 
@@ -29,7 +31,7 @@ impl Section {
     Section::Knowledge,
     Section::Channels,
     Section::Runs,
-    Section::Models,
+    Section::Providers,
   ];
 
   fn label(self) -> &'static str {
@@ -40,7 +42,7 @@ impl Section {
       Section::Knowledge => "Knowledge",
       Section::Channels => "Channels",
       Section::Runs => "Runs",
-      Section::Models => "Models",
+      Section::Providers => "Providers",
       Section::Settings => "Settings",
     }
   }
@@ -53,7 +55,7 @@ impl Section {
       Section::Knowledge => IconName::Knowledge,
       Section::Channels => IconName::Channels,
       Section::Runs => IconName::Runs,
-      Section::Models => IconName::Models,
+      Section::Providers => IconName::Providers,
       Section::Settings => IconName::Settings,
     }
   }
@@ -66,7 +68,7 @@ impl Section {
             Section::Knowledge => "Drop folders, PDFs and sites; they're indexed locally for retrieval.",
             Section::Channels => "Connect X, Discord, Telegram, Slack, Matrix, a webhook or a local HTTP API.",
             Section::Runs => "Every conversation and flow run: inputs, tool calls, outputs, tokens and cost. Replay any of them.",
-            Section::Models => "Pull and fit local models, and keep remote keys in the OS keychain.",
+            Section::Providers => "Pull and fit local models, and keep remote keys in the OS keychain.",
             Section::Settings => "Preferences for the app itself.",
         }
   }
@@ -85,6 +87,7 @@ pub fn AppShell() -> Element {
   let agents = use_signal(Agent::demo);
   let selected = use_signal(|| 0usize);
   let section = use_signal(|| Section::Agents);
+  let default_provider = use_signal(|| 1usize);
   let name = agents
     .read()
     .get(selected())
@@ -99,6 +102,8 @@ pub fn AppShell() -> Element {
         AgentList { agents, selected }
         TestChat { agents, selected: selected() }
         Builder { agents, selected: selected() }
+      } else if section() == Section::Providers {
+        Providers { default_provider }
       } else {
         main { class: "tb-section-empty",
           div { class: "tb-empty",
