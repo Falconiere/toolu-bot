@@ -1,0 +1,224 @@
+/* Providers follows the supplied dark settings reference. */
+.tb-providers {
+  --provider-bg: #1c1c1b;
+  --provider-line: #2b2b2a;
+  --provider-muted: #aaa;
+  grid-column: 2 / -1;
+  min-width: 0;
+  padding: 16px 28px 48px 52px;
+  background: var(--provider-bg);
+  color: #f5f5f5;
+  color-scheme: dark;
+}
+.tb-providers-content {
+  max-width: 1040px;
+  margin-inline: auto;
+}
+.tb-providers h1 {
+  margin: 0 0 24px;
+  font: 600 24px / 28px var(--font-sans);
+  letter-spacing: -0.02em;
+}
+.tb-providers h2 {
+  margin: 0;
+  font: 600 14px / 20px var(--font-sans);
+}
+.tb-provider-default {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 66px;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  padding: 10px 16px;
+  border: 1px solid var(--provider-line);
+  border-radius: 16px;
+}
+.tb-provider-default p {
+  margin: 2px 0 0;
+  color: var(--provider-muted);
+}
+.tb-provider-select {
+  position: relative;
+  flex: 0 0 168px;
+}
+.tb-provider-select img {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+.tb-provider-select select {
+  appearance: none;
+  width: 100%;
+  height: 34px;
+  padding: 0 28px 0 36px;
+  border: 1px solid var(--provider-line);
+  border-radius: 8px;
+  background: #20201f;
+  color: #ddd;
+  font: 13px / 20px var(--font-sans);
+  cursor: pointer;
+}
+.tb-provider-select svg {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--provider-muted);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+.tb-providers select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tb-providers-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 28px;
+  margin-bottom: 8px;
+}
+.tb-provider-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 188px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--provider-line);
+  border-radius: 8px;
+  background: #20201f;
+  color: var(--provider-muted);
+}
+.tb-provider-search:focus-within {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tb-provider-search svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+.tb-provider-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.tb-provider-search input::placeholder {
+  color: #b8b8b8;
+  opacity: 1;
+}
+.tb-provider-list {
+  padding: 0 16px;
+  border: 1px solid var(--provider-line);
+  border-radius: 16px;
+}
+.tb-provider-row + .tb-provider-row {
+  border-top: 1px solid var(--provider-line);
+}
+.tb-provider-row summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 63px;
+  padding: 0;
+  list-style: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.tb-provider-row summary::-webkit-details-marker {
+  display: none;
+}
+.tb-provider-row summary:hover {
+  background: #242423;
+}
+.tb-provider-logo {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  object-fit: contain;
+}
+.tb-provider-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-block: 10px;
+}
+.tb-provider-name,
+.tb-provider-status {
+  overflow-wrap: anywhere;
+}
+.tb-provider-status {
+  color: var(--provider-muted);
+}
+.tb-provider-chevron {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin-right: 4px;
+  fill: none;
+  stroke: var(--provider-muted);
+  stroke-width: 1.4;
+}
+.tb-provider-row[open] .tb-provider-chevron {
+  transform: rotate(90deg);
+}
+.tb-provider-detail {
+  margin: 0 20px 16px 34px;
+  max-width: 65ch;
+  color: var(--provider-muted);
+}
+.tb-providers-other {
+  margin-top: 24px;
+}
+.tb-providers-other h2 {
+  margin-bottom: 8px;
+}
+.tb-provider-empty {
+  margin: 0;
+  padding-block: 24px;
+  color: var(--provider-muted);
+}
+.tb-provider-preview {
+  margin: 24px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--provider-muted);
+}
+@media (max-width: 600px) {
+  .tb-providers {
+    padding: 24px 16px 40px;
+  }
+  .tb-provider-default {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tb-provider-select {
+    flex: none;
+    width: 100%;
+  }
+  .tb-provider-search {
+    width: 180px;
+    max-width: 65%;
+  }
+}
